@@ -1,0 +1,82 @@
+# you can find this values on the repository of the service. 
+# please do not forget to check the sensible values such as users and passwords
+# add them to the external secret
+
+replicaCount: 1
+
+image:
+  repository: us.gcr.io/city-services-platform/city-insights-api #Repository name checked on the service
+  pullPolicy: Always
+  tag: development
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 7000
+#  loadBalancerIP: ""
+  whitelist: "*"
+  metricsPort: 8000
+  env: DEVELOP
+
+#ingress:
+ # enabled: true
+  #annotations:
+   # ingress.gcp.kubernetes.io/pre-shared-cert: cloudflare-2035-05-23-origin-certificate
+    # kubernetes.io/ingress.global-static-ip-name: city-insights-api-global-ip
+#    kubernetes.io/ingress.class: nginx
+#    kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: city-insights-api.cox2m.com
+      paths: [ /* ]
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+externalSecrets:
+  gcpProject: city-services-platform #default project for city services
+  gcpSecretName: city-services-insights-api-secret #secret name as it appears on gcp secret
+
+traefik:
+  dns: city-services-insights-dev.cox2m.com 
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
